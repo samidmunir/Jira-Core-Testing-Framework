@@ -24,6 +24,8 @@ public class UserManagementSteps {
     private AdminReAuthenticationPage reAuthenticationPage;
     private UserManagementPage userManagementPage;
 
+    private String createdUsername;
+
     private void initPages() {
         driver = Hooks.getDriver();
 
@@ -71,5 +73,42 @@ public class UserManagementSteps {
     @Then("the User Management page should be displayed")
     public void theUserManagementPageShouldBeDisplayed() throws TimeoutException {
         Assert.assertTrue(userManagementPage.isDisplayed(), "User Management page was not displayed");
+    }
+
+    @Given("the admin is on the User Management page")
+    public void adminIsOnUserManagementPage() throws TimeoutException {
+        initPages();
+
+        driver.get(ConfigReader.getProp("login.url"));
+
+        loginPage.loginAs(
+                ConfigReader.getProp("admin.username"),
+                ConfigReader.getProp("admin.password")
+        );
+
+        dashboardPage.goToUserManagement();
+
+        reAuthenticationPage.confirmPassword(
+                ConfigReader.getProp("admin.password")
+        );
+
+        Assert.assertTrue(userManagementPage.isDisplayed());
+    }
+
+    @When("the admin creates a new user")
+    public void adminCreatesNewUser() {
+        int randID = (int) Math.random() * 100;
+        String email = "testuser" + randID + "@email.com";
+        String fullName = "Test User " + randID;
+        String username = "testuser" + randID;
+        createdUsername = username;
+        String password = "Test123";
+
+        userManagementPage.createUser(email, fullName, createdUsername, password);
+    }
+
+    @Then("the new user should appear in the user list")
+    public void verifyUserCreated() {
+        Assert.assertTrue(userManagementPage.isUserPresent(createdUsername), "User was not found in the filtered users table");
     }
 }

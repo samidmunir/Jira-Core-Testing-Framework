@@ -7,3 +7,9 @@ Feature: User Management
     And the admin navigates to User Management
     And the admin re-authenticates with the admin password
     Then the User Management page should be displayed
+  
+  @ui @user-management @create-user
+  Scenario: Admin can create a new user
+    Given the admin is on the User Management page
+    When the admin creates a new user
+    Then the new user should appear in the user list

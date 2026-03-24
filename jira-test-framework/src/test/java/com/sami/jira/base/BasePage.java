@@ -1,5 +1,6 @@
 package com.sami.jira.base;
 
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import org.openqa.selenium.By;
@@ -11,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BasePage {
-    private WebDriver driver;
+    protected WebDriver driver;
     private WebDriverWait wait;
 
     public BasePage(WebDriver driver) {
@@ -57,5 +58,13 @@ public class BasePage {
                 ((JavascriptExecutor) driver).executeAsyncScript("arguments[0].click();", element);
             }
         }
+    }
+
+    protected List<WebElement> getElements(By locator) {
+        return driver.findElements(locator);
+    }
+
+    protected boolean isElementPresent(By locator) {
+        return !driver.findElements(locator).isEmpty();
     }
 }
