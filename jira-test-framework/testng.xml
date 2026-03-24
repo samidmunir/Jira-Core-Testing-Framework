@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Jira Automation Suite" verbose="1">
+
+    <!-- UI Tests -->
+    <test name="UI Tests">
+        <packages>
+            <package name="com.sami.jira.ui.tests"/>
+        </packages>
+    </test>
+
+    <!-- API Tests -->
+    <test name="API Tests">
+        <packages>
+            <package name="com.sami.jira.api.tests"/>
+        </packages>
+    </test>
+
+</suite>

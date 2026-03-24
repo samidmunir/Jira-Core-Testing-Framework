@@ -10,11 +10,13 @@ public class SmokeUITest extends BaseUITest {
     public void verifyJiraHomePageLoads() {
         String currentURL = driver.getCurrentUrl();
 
+        /*
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        */
         
         Assert.assertTrue(currentURL.contains("localhost:8080"), "Jira did not load correctly");
     }
