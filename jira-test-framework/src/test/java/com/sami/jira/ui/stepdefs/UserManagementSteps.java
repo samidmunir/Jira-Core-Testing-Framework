@@ -9,6 +9,7 @@ import com.sami.jira.base.Hooks;
 import com.sami.jira.config.ConfigReader;
 import com.sami.jira.ui.pages.AdminReAuthenticationPage;
 import com.sami.jira.ui.pages.DashboardPage;
+import com.sami.jira.ui.pages.EditUserProfilePage;
 import com.sami.jira.ui.pages.LoginPage;
 import com.sami.jira.ui.pages.UserManagementPage;
 
@@ -23,6 +24,7 @@ public class UserManagementSteps {
     private DashboardPage dashboardPage;
     private AdminReAuthenticationPage reAuthenticationPage;
     private UserManagementPage userManagementPage;
+    private EditUserProfilePage editUserProfilePage;
 
     private String createdUsername;
 
@@ -37,6 +39,7 @@ public class UserManagementSteps {
         dashboardPage = new DashboardPage(driver);
         reAuthenticationPage = new AdminReAuthenticationPage(driver);
         userManagementPage = new UserManagementPage(driver);
+        editUserProfilePage = new EditUserProfilePage(driver);
     }
 
     @Given("the admin is on the login page")
@@ -93,22 +96,175 @@ public class UserManagementSteps {
         );
 
         Assert.assertTrue(userManagementPage.isDisplayed());
+        System.out.println("\n*** PASS (1) ***\n");
     }
 
     @When("the admin creates a new user")
     public void adminCreatesNewUser() {
-        int randID = (int) Math.random() * 100;
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        int randID =  (int) System.nanoTime();
         String email = "testuser" + randID + "@email.com";
         String fullName = "Test User " + randID;
         String username = "testuser" + randID;
         createdUsername = username;
         String password = "Test123";
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         userManagementPage.createUser(email, fullName, createdUsername, password);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Then("the new user should appear in the user list")
     public void verifyUserCreated() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
         Assert.assertTrue(userManagementPage.isUserPresent(createdUsername), "User was not found in the filtered users table");
+        
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @When("the admin searches for the user by username")
+    public void theAdminSearchesForTheUserByUsername() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        userManagementPage.searchForUser(createdUsername);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @When("the admin opens the Edit User page for that user")
+    public void theAdminOpensTheEditUserPageForThatUser() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        userManagementPage.clickEditForUser(createdUsername);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @When("the admin deactivates the user")
+    public void theAdminDeactivatesTheUser() throws TimeoutException {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertTrue(
+                editUserProfilePage.isDisplayed(),
+                "Edit User Profile page was not displayed"
+        );
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        editUserProfilePage.deactivateUser();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Then("the user should appear in the inactive users filter")
+    public void theUserShouldAppearInTheInactiveUsersFilter() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        userManagementPage.filterInactiveUsers();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertTrue(
+                userManagementPage.isUserPresent(createdUsername),
+                "User was not found in the inactive users filter"
+        );
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Given("a new user exists")
+    public void aNewUserExists() {
+        int randID = (int) System.nanoTime();
+        String email = "testuser" + randID + "@email.com";
+        String fullName = "Test User " + randID;
+        String username = "testuser" + randID;
+        createdUsername = username;
+        String password = "Test123";
+        
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        userManagementPage.createUser(email, fullName, createdUsername, password);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertTrue(userManagementPage.isUserPresent(username), "Newly created user was not found in the user list");
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
