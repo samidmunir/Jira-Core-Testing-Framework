@@ -1,5 +1,7 @@
 package com.sami.jira.ui.tests;
 
+import java.util.concurrent.TimeoutException;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -10,18 +12,13 @@ import com.sami.jira.ui.pages.LoginPage;
 
 public class HomePageNavigationTest extends BaseUITest {
     @Test
-    public void verifyNavigationToLoginPage() throws InterruptedException {
+    public void userCanNavigateFromHomePageToLoginPage() throws TimeoutException {
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = new LoginPage(driver);
 
         homePage.open(ConfigReader.getProp("base.url"));
-        
-        Thread.sleep(2000);
-
         homePage.clickLoginButton();
 
-        Thread.sleep(2000);
-
-        Assert.assertTrue(loginPage.isLoginPageDisplayed(), "Login page was not displayed after clicking Log In");
+        Assert.assertTrue(loginPage.isDisplayed(), "Login Page was not displayed or reached after clicking 'Log In'");
     }
 }
