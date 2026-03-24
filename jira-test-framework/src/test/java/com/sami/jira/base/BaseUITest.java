@@ -7,6 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import com.sami.jira.config.ConfigReader;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseUITest {
@@ -19,7 +21,7 @@ public class BaseUITest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("http://localhost:8080");
+        driver.get(ConfigReader.getProp("base.url"));
     }
 
     @AfterMethod
