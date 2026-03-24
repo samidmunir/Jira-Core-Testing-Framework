@@ -1,18 +1,20 @@
 package com.sami.jira.ui.pages;
 
+import java.util.concurrent.TimeoutException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class UserManagementPage {
-    private WebDriver driver;
+import com.sami.jira.base.BasePage;
+
+public class UserManagementPage extends BasePage {
+    private By userManagementSidePanel = By.id("user_browser");
 
     public UserManagementPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    private By userManagementSidePanelBy = By.id("user_browser");
-
-    public boolean isUserManagementPageDisplayed() {
-        return driver.findElement(userManagementSidePanelBy).isDisplayed();
+    public boolean isDisplayed() throws TimeoutException {
+        return isDisplayed(userManagementSidePanel);
     }
 }
