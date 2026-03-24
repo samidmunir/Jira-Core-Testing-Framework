@@ -13,7 +13,8 @@ import io.cucumber.testng.CucumberOptions;
     plugin = {
         "pretty",
         "html:target/cucumber-reports/user-management.html"
-    }
+    },
+    monochrome = true
 )
 
 public class UserManagementRunner extends AbstractTestNGCucumberTests {
