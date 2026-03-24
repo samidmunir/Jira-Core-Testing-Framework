@@ -1,27 +1,29 @@
 package com.sami.jira.ui.pages;
 
+import java.util.concurrent.TimeoutException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LoginPage {
-    private WebDriver driver;
+import com.sami.jira.base.BasePage;
+
+public class LoginPage extends BasePage {
+    private By loginForm = By.id("login-form");
+    private By usernameInput = By.id("username-field");
+    private By passwordInput = By.id("password-field");
+    private By loginButton = By.id("login-button");
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    private By loginFormBy = By.id("login-form");
-    private By usernameInputBy = By.id("username-field");
-    private By passwordInputBy = By.id("password-field");
-    private By loginButtonBy = By.id("login-button");
-
-    public boolean isLoginPageDisplayed() {
-        return driver.findElement(loginFormBy).isDisplayed();
+    public boolean isDisplayed() throws TimeoutException {
+        return isDisplayed(loginForm);
     }
 
-    public void login(String username, String password) {
-        driver.findElement(usernameInputBy).sendKeys(username);
-        driver.findElement(passwordInputBy).sendKeys(password);
-        driver.findElement(loginButtonBy).click();
+    public void loginAs(String username, String password) {
+        type(usernameInput, username);
+        type(passwordInput, password);
+        click(loginButton);
     }
 }
